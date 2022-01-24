@@ -20,7 +20,7 @@ Debe estar Docker instalado en la CPU.
 
 	**$ python3 process_group.py -i vcfs/**
 
-4) Resistance_detection.py (toma el “variant.ann.vcf” y lo compara contra las referencias y bases originales buscando resistencias. Tiene como salida un .json ‘out_resistance’)
+4) Resistance_detection.py (toma el “variant.ann.vcf” y lo compara contra las referencias y bases originales buscando resistencias. Tiene como salida un .json ‘out_resistance’. actualmente solo trabaja con la primer muestra, en proceso para multiples)
 
 	**$ python3 resistance_detection.py**
 
