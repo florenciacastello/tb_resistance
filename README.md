@@ -2,7 +2,7 @@
 
 
 
-# Manual para búsqueda de resistencias. 
+## Pasos: 
 
 Debe estar Docker instalado en la CPU. 
 
