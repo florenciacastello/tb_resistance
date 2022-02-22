@@ -4,13 +4,18 @@
 
 ## Pasos: 
 
-Debe estar Docker instalado en la CPU. 
+Debe estar Docker instalado en la CPU. (https://docs.docker.com/engine/install/ubuntu/)
+y deben estar hechos los pasos post instalacion:
+(https://docs.docker.com/engine/install/linux-postinstall/)
+ 	$ sudo usermod -aG docker $USER  (posiblemente haya que cerrar todas las terminales luego de correr este comando y volver a abrirlas. Para chequear qye este todo bien correr:
+	$ docker run hello-world        )                          
 
+0) git clone 
 
 ### El proceso consta de 5 scripts:
 1) Prepare_reference.py (descarga y prepara la referencia de H37Rv del NCBI)
 
-	**$ python3 Prepare_reference.py**
+	**$ python3 prepare_reference.py**
 
 2) Process_sample.py (Prepara las muestras tomando fastq1 de R1 y R2. Para más de 1 puede meterse en bash)
 
