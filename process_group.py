@@ -45,7 +45,8 @@ def procces_samples(data_dir, output_dir, vcf_dir, reference_filename):
                     -V "{output_dir}/combined.raw.vcf.gz" \
                     -O "{output_dir}/variant.vcf" """
     e(cmdx)
-    cmdx=f'java -jar {data_dir}/snpEff/snpEff.jar -stats {output_dir}/snpEff.html \
+    cmdx=f'{DOCKER} -v {data_dir}:{data_dir} -v {output_dir}:{output_dir} \
+        openjdk:11.0.14.1-jre java -jar {data_dir}/snpEff/snpEff.jar -stats {output_dir}/snpEff.html \
         h37rv {output_dir}/variant.vcf > {output_dir}/variant.ann.vcf 2>> {output_dir}/snpEff.log'
     e(cmdx)
  
@@ -62,7 +63,7 @@ def main():
     parser.add_argument('-rf', '--reference_filename', help= '', default='h37rv.fna')
     parser.add_argument('--verbose', help= '', action='store_true')
     args=parser.parse_args()
-    # os.environ['verbose']=str(args.verbose)
+    #os.environ['verbose']=str(args.verbose)
     if not os.path.exists(args.out):
         os.makedirs(args.out)
        

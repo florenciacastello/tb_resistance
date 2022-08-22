@@ -1,6 +1,7 @@
 import subprocess as sp
 import argparse
 import os
+import pandas as pd
 
 
 def e(command):
@@ -41,12 +42,30 @@ def prepare_ref(data_dir):
         e(cmd)
         cmd=f'echo "  h37rv.chromosomes : NC_000962.3" >> {data_dir}/snpEff/snpEff.config'
         e(cmd)
-        cmd= f'cd {data_dir}/snpEff && java -jar snpEff.jar build -genbank -v h37rv'
-        e(cmd)
+    cmd= f'cd {data_dir}/snpEff && {docker} openjdk:11.0.14.1-jre java -jar snpEff.jar build -genbank -v h37rv'
+    e(cmd)
+    if not os.path.exists(f'{data_dir}/andytb.bed'):    
+        print('Procesando base de resistencias')
+        with open(f'{data_dir}/andytb.csv') as f:
+            andytb = pd.read_csv(f)
+        with open(f'{data_dir}/andytb.bed', 'w') as k:
+            for _, r in andytb[(andytb['NucleotidePosH37']!='-')&(andytb['Drug']!='-')].iterrows():
+                try:
+                    int(r.NucleotidePosH37)
+                    start=int(r.NucleotidePosH37)
+                    end=int(r.NucleotidePosH37)
+                except:
+                    start=int(r.NucleotidePosH37.split('/')[0])
+                    end=int(r.NucleotidePosH37.split('/')[1])
+                if start > end:
+                    start, end= end, start
+                k.write(f'NC_000962.3\t{start}\t{end}\t{r.Drug}\n')
+        print('Done')
 
 def main():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('-d','--data', help= 'Directorio donde se guarda la referencia y los archivos aux.', default='./data')
+    # parser.add_argument('-r','--resistance', help= 'base de resistencias', default='andytb')
  #   parser.add_argument('-cpus','--cpus', help= '', default=4)
   #  parser.add_argument('-fastq1', '--fastq1', help= '', required=True)
   #  parser.add_argument('-fastq2', '--fastq2', help= '', requiere=True)
